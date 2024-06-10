@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ namespace Game_Hall._Domain.entities
     {
 
         public int id { get; set; }
+
         public string Name { get; set; }
 
         public int phone { get; set; }
@@ -18,7 +20,6 @@ namespace Game_Hall._Domain.entities
      
 
 
-        //public int GameId { get; set; }
-      //public Game Game { get; set; }
+       
     }
 }

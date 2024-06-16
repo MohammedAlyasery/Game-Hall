@@ -1,0 +1,70 @@
+@using GameHall.Services
+@using Game_Hall._Domain.entities
+@using GameHall.Servicesinterfaces;
+
+
+
+@if (isVisible)
+{
+    <div class="modal show" tabindex="-1" style="display: block;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@((game.id == 0) ? "Add Game" : "Edit Game")</h5>
+                    <button type="button" class="btn-close" aria-label="Close" @onclick="Cancel"></button>
+                </div>
+   
+                    <div class="mb-3">
+                        <label for="name" class="form-label">name</label>
+                        <input type="text" class="form-control" id="name" @bind="game.name">
+                    </div>
+
+                    <div class="mb-3">
+                    <label for="tybe" class="form-label">tybe</label>
+                    <input type="text" class="form-control" id="tybe" @bind="game.tybe">
+                    </div>
+
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="Cancel">Cancel</button>
+                    <button type="button" class="btn btn-primary" @onclick="Save">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+
+    [Parameter] public EventCallback OnSave { get; set; }
+    [Inject] public IGameServices GameServices { get; set; }
+
+    private bool isVisible;
+
+    private Game game = new();
+
+    public void Show(Game game)
+    {
+        this.game = game;
+        isVisible = true;
+    }
+
+    private void Save()
+    {
+        if (game.id == 0)
+        {
+            GameServices.Save(game);
+        }
+        else
+        {
+            GameServices.Update(game);
+        }
+
+        isVisible = false;
+        OnSave.InvokeAsync();
+    }
+
+    private void Cancel() => isVisible = false;
+}
+
+

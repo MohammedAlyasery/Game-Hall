@@ -16,7 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Game Hall. Domain\Game Hall. Domain.csproj" />
     <ProjectReference Include="..\Game Hall.Persistance\Game Hall.Persistance.csproj" />
+    <ProjectReference Include="..\GameHall.Servicesinterfaces\GameHall.Servicesinterfaces.csproj" />
+    <ProjectReference Include="..\Services.GameHall\GameHall.Services.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,92 @@
+﻿@page "/Games"
+@rendermode InteractiveServer
+@using GameHall.Services
+@using Game_Hall._Domain.entities
+@using GameHall.Servicesinterfaces;
+
+
+
+
+<h3>Games</h3>
+
+<button class="btn btn-primary" @onclick="ShowAddModal">Add New Game</button>
+
+<br />
+
+@if (games == null)
+{
+    <span>Loading...</span>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>name</th>
+                <th>tybe</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var Game in games)
+            {
+                <tr>
+                   
+                    <td>@Game.name</td>
+                    <td>@Game.tybe</td>
+                 
+                    <td>
+                        <button class="btn btn-secondary" @onclick="() => ShowEditModal(Game)">Edit</button>
+                        <button class="btn btn-danger" @onclick="() => DeleteGame(Game)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<AddEditGameModal @ref="addEditGameModal" OnSave="RefreshList" />
+                 
+       
+       
+
+
+
+@code {
+    [Inject] IGameServices GameServices { get; set; }
+
+    private List<Game> games;
+
+    private AddEditGameModal addEditGameModal;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadGames();
+    }
+
+    private async Task LoadGames()
+    {
+        games = await GameServices.GetAll();
+    }
+
+    private void ShowAddModal()
+    {
+        addEditGameModal.Show(new Game());
+    }
+
+    private void ShowEditModal(Game game)
+    {
+        addEditGameModal.Show(game);
+    }
+
+    private void DeleteGame(Game game)
+    {
+        GameServices.Delete(game);
+        LoadGames();
+    }
+
+    private void RefreshList()
+    {
+        LoadGames();
+    }
+}

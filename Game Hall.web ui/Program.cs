@@ -1,5 +1,7 @@
 using Game_Hall.Persistance;
 using Game_Hall.web_ui.Components;
+using GameHall.Services;
+using GameHall.Servicesinterfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +18,16 @@ builder.Services.AddDbContextFactory<Game_Hall_Context>(options =>
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+
+
+builder.Services.AddScoped<IGameServices,GameServices>();
+builder.Services.AddScoped<IPlayerServices, PlayerServices>();
+
+
+
+
+
 
 var app = builder.Build();
 

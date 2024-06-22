@@ -94,19 +94,19 @@ namespace GameHall.Services
         public async Task AddPlayerToGame(Game game, Player player)
         {
             using var db = _contextFactory.CreateDbContext();
-            var tmpBook = db.games.Include(x => x.Players).FirstOrDefault(x => x.id == game.id);
-            if (tmpBook != null)
+            var tmpGame = db.games.Include(x => x.Players).FirstOrDefault(x => x.id == game.id);
+            if (tmpGame != null)
             {
-                var tmpAuthor = db.Players.FirstOrDefault(x => x.id == player.id);
-                if (tmpAuthor != null)
+                var tmpPlayer = db.Players.FirstOrDefault(x => x.id == player.id);
+                if (tmpPlayer != null)
                 {
-                    tmpBook.Players.Add(tmpAuthor);
+                    tmpGame.Players.Add(tmpPlayer);
                 }
                 else
                 {
                     db.Players.Add(player);
                     await db.SaveChangesAsync();
-                    tmpBook.Players.Add(player);
+                    tmpGame.Players.Add(player);
                 }
                 await db.SaveChangesAsync();
             }
@@ -115,13 +115,13 @@ namespace GameHall.Services
         public async Task RemovePlayerFromGame(Game game, Player player)
         {
             using var db = _contextFactory.CreateDbContext();
-            var tmpBook = db.games.Include(x => x.Players).FirstOrDefault(x => x.id == game.id);
-            if (tmpBook != null)
+            var tmpGame = db.games.Include(x => x.Players).FirstOrDefault(x => x.id == game.id);
+            if (tmpGame != null)
             {
-                var bookAuthor = tmpBook.Players.FirstOrDefault(x => x.id == player.id);
-                if (bookAuthor != null)
+                var GamePlayer = tmpGame.Players.FirstOrDefault(x => x.id == player.id);
+                if (GamePlayer != null)
                 {
-                    tmpBook.Players.Remove(bookAuthor);
+                    tmpGame.Players.Remove(GamePlayer);
                     await db.SaveChangesAsync();
                 }
             }

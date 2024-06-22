@@ -5,7 +5,7 @@
 namespace Game_Hall.Persistance.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -14,7 +14,7 @@ namespace Game_Hall.Persistance.Migrations
                 name: "games",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", maxLength: 10, nullable: false)
+                    id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     tybe = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
@@ -28,10 +28,10 @@ namespace Game_Hall.Persistance.Migrations
                 name: "Players",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", maxLength: 10, nullable: false)
+                    id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    phone = table.Column<int>(type: "int", maxLength: 20, nullable: false)
+                    phone = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

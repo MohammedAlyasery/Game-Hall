@@ -1,0 +1,118 @@
+﻿@page "/Games"
+@rendermode InteractiveServer
+@inject IDialogService DialogService
+
+@using Game_Hall._Domain.entities
+@using GameHall.Servicesinterfaces;
+
+
+
+
+<h3>Games</h3>
+
+    <div style="float:inline-end"
+    
+
+    <FluentButton Appearance="Appearance.Accent" @onclick="ShowAddModal">Add New Game</FluentButton>
+
+</div>
+
+
+
+
+
+
+<br />
+
+@if (games == null)
+{
+    <span>Loading...</span>
+}
+else
+{
+    <FluentDataGrid Items="@games"
+        GenerateHeader="GenerateHeaderOption.Sticky"
+        ResizableColumns=true
+        Pagination="@pagination"
+        Style="width: 100%; height: 405px;overflow:auto;">
+        
+        <PropertyColumn Property="@(p => p.name)" Sortable="true" />
+        <PropertyColumn Property="@(p => p.tybe)" Sortable="true" />
+
+        <TemplateColumn Title="Actions" Align="@Align.End">
+            <FluentButton aria-label="Edit item" IconEnd="@(new Icons.Regular.Size16.Edit())" OnClick="@(() => OpenDialogAsync(context))" />
+            <FluentButton aria-label="Delete item" IconEnd="@(new Icons.Regular.Size16.Delete())" OnClick="@(() => DeleteBook(context))" />
+        </TemplateColumn>
+    </FluentDataGrid>
+
+    <FluentPaginator State="@pagination" />
+
+
+
+
+}
+
+@* <AddEditGameModal @ref="addEditGameModal" OnSave="RefreshList" /> *@
+                 
+       
+       
+
+
+
+@code {
+    [Inject] IGameServices GameServices { get; set; }
+    private IQueryable<Game> games;
+    private AddEditGameDialog addEditGameDialog;
+    PaginationState pagination = new PaginationState { ItemsPerPage = 10 };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadGames();
+    }
+
+    private async Task LoadGames()
+    {
+        games = (await GameServices.GetAll()).AsQueryable();
+        StateHasChanged();
+    }
+
+    private async Task OpenDialogAsync(Game game)
+    {
+        DialogParameters parameters = new DialogParameters()
+            {
+                Title = ((game.id == 0) ? "Add Game" : "Edit Game"),
+                PrimaryAction = "Yes",
+                PrimaryActionEnabled = false,
+                SecondaryAction = "No",
+                Width = "800px",
+                TrapFocus = true,
+                Modal = true,
+                PreventScroll = true
+            };
+        var dialog = await DialogService.ShowDialogAsync<AddEditGameDialog>(game, parameters);
+        var result = await dialog.Result;
+
+        if (!result.Cancelled && result.Data != null)
+        {
+            await LoadGames();
+        }
+
+    }
+
+    private async Task ShowAddModal()
+    {
+        await OpenDialogAsync(new Game());
+    }
+
+    private async void DeleteBook(Game game)
+    {
+        await GameServices.Delete(game);
+        await LoadGames();
+    }
+
+    private async void RefreshList()
+    {
+        await LoadGames();
+    }
+}
+

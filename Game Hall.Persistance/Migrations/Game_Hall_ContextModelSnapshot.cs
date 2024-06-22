@@ -23,11 +23,11 @@ namespace Game_Hall.Persistance.Migrations
 
             modelBuilder.Entity("GamePlayer", b =>
                 {
-                    b.Property<short>("Gamesid")
-                        .HasColumnType("smallint");
+                    b.Property<int>("Gamesid")
+                        .HasColumnType("int");
 
-                    b.Property<short>("Playersid")
-                        .HasColumnType("smallint");
+                    b.Property<int>("Playersid")
+                        .HasColumnType("int");
 
                     b.HasKey("Gamesid", "Playersid");
 
@@ -38,11 +38,11 @@ namespace Game_Hall.Persistance.Migrations
 
             modelBuilder.Entity("Game_Hall._Domain.entities.Game", b =>
                 {
-                    b.Property<short>("id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("smallint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<short>("id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
                     b.Property<string>("name")
                         .IsRequired()
@@ -61,19 +61,19 @@ namespace Game_Hall.Persistance.Migrations
 
             modelBuilder.Entity("Game_Hall._Domain.entities.Player", b =>
                 {
-                    b.Property<short>("id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("smallint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<short>("id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<short>("phone")
-                        .HasColumnType("smallint");
+                    b.Property<int>("phone")
+                        .HasColumnType("int");
 
                     b.HasKey("id");
 

@@ -11,23 +11,12 @@ namespace Game_Hall.Persistance
 {
     public class Game_Hall_Context : DbContext
     {
-
         public Game_Hall_Context(DbContextOptions<Game_Hall_Context> options) : base(options) 
         {
         
         }
-
-
-
-
-
-
-
-        public DbSet<Player> Players { get; set; }
-        
+       public DbSet<Player> Players { get; set; }
         public DbSet<Game> games { get; set; }
-
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -35,31 +24,13 @@ namespace Game_Hall.Persistance
             modelBuilder.Entity<Player>()
                 .Property(p => p.Name)
                 .HasMaxLength(200)
-                .IsRequired(true);
-
-
-            modelBuilder.Entity<Player>()
-                .Property(p => p.id)
-                .HasColumnType("smallint")
-                .IsRequired(true);
-
-            modelBuilder.Entity<Player>()
-                .Property(p => p.phone)
-                .HasColumnType("smallint");
-
-
-
-
+              .IsRequired(true);
+                       
 
             modelBuilder.Entity<Game>()
                 .Property(G => G.name)
                 .HasMaxLength(200);
-
-
-            modelBuilder.Entity<Game>()
-                .Property(G => G.id)
-                .HasColumnType("smallint")
-                .IsRequired(true);
+                     
 
 
             modelBuilder.Entity<Game>()

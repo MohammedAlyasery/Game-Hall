@@ -20,4 +20,8 @@
     <ProjectReference Include="..\Game Hall. Domain\Game Hall. Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

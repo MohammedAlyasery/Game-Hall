@@ -1,0 +1,124 @@
+﻿@using Game_Hall._Domain.entities
+@using Game_Hall.FluentUI.Components.Pages.PlayerComponents
+@using GameHall.Servicesinterfaces
+@implements IDialogContentComponent
+@inject IGameServices GameServices
+@inject IPlayerServices PlayerServices
+@inject IDialogService DialogService
+@inject NavigationManager NavigationManager
+
+<FluentDialogHeader ShowDismiss="true">
+    <h5 class="modal-title">@((Content.id == 0) ? "ADD Game" : "Edit Game")</h5>
+</FluentDialogHeader>
+
+<FluentDialogBody>
+    <FluentGrid>
+        <FluentGridItem xs="12" md="8">
+            <FluentGrid>
+                <FluentGridItem xs="12" sm="6" md="6" lg="6">
+                    <FluentTextField @bind-Value="@Content.name" style="width:100%">name</FluentTextField>
+                </FluentGridItem>
+                
+                
+                <FluentGridItem xs="12" sm="6" md="6" lg="6">
+                    <FluentTextField @bind-Value="@Content.tybe" style="width:100%">tybe</FluentTextField>
+                </FluentGridItem>
+           
+     
+                <FluentGridItem xs="12" sm="6" md="6" lg="6">
+                    <FluentListbox Items="AvailablePlayer"
+                                   OptionText="@(i=>i.Name)"
+                                   OptionValue="@(i=>i.id.ToString())"
+                                   @bind-SelectedOption="@SelectedPlayer"
+                                   style="width:100%"
+                                   Label="Available Player">
+                        <OptionTemplate>
+                            <FluentButton IconEnd="@(new Icons.Regular.Size16.AddCircle())"
+                                          @onclick="@(()=>AddToGame(@context))" />
+                            @context.Name
+                        </OptionTemplate>
+                    </FluentListbox>
+                </FluentGridItem>
+
+                <FluentGridItem xs="12" sm="6" md="6" lg="6">
+                    <FluentListbox Items="Content.Players"
+                                   OptionText="@(i=>i.Name)"
+                                   OptionValue="@(i=>i.id.ToString())"
+                                   @bind-SelectedOption="@SelectedPlayer"
+                                   style="width:100%"
+                                   Label="Game's Player">
+                        <OptionTemplate>
+                            <FluentButton IconEnd="@(new Icons.Regular.Size16.Delete())"
+                                          @onclick="@(()=>RemoveFromGame(@context))" />
+                            @context.Name
+                        </OptionTemplate>
+
+                    </FluentListbox>
+                </FluentGridItem>
+            </FluentGrid>
+        </FluentGridItem>
+
+
+    </FluentGrid>
+
+</FluentDialogBody>
+
+<FluentDialogFooter>
+    <FluentButton Appearance="Appearance.Stealth" @onclick="OpenPlayers">Players</FluentButton>
+    <FluentButton Appearance="Appearance.Neutral" @onclick="Cancel">Cancel</FluentButton>
+    <FluentButton Appearance="Appearance.Accent" @onclick="SaveAsync">Save</FluentButton>
+</FluentDialogFooter>
+
+@code {
+
+    [Parameter] public EventCallback OnSave { get; set; }
+    [Parameter] public Game Content { get; set; } = new();
+    [CascadingParameter] public FluentDialog Dialog { get; set; }
+
+    public Player SelectedPlayer { get; set; } = new();
+    public List<Player> AvailablePlayer { get; set; } = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        AvailablePlayer = await PlayerServices.GetAll();
+    }
+    private async Task SaveAsync()
+    {
+        if (Content.id == 0)
+        {
+            await GameServices.Save(Content);
+        }
+        else
+        {
+            await GameServices.Update(Content);
+        }
+        await OnSave.InvokeAsync();
+        await Dialog.CloseAsync(Content);
+    }
+
+    private async void Cancel()
+    {
+        await Dialog.CloseAsync();
+    }
+
+    private async void AddToGame(Player player)
+    {
+        await GameServices.AddPlayerToGame(Content, player);
+        Content.Players.Add(player);
+        StateHasChanged();
+
+    }
+
+    private async void RemoveFromGame(Player player)
+    {
+        await GameServices.RemovePlayerFromGame(Content, player);
+        Content.Players.Remove(player);
+        StateHasChanged();
+
+    }
+    private void OpenPlayers()
+    {
+        NavigationManager.NavigateTo("/players");
+    }
+
+}

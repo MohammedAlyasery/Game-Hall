@@ -75,11 +75,11 @@ namespace GameHall.Services
                 }
             }
 
-               public Task<List<Player>> GetAll()
+               public async Task<List<Player>> GetAll()
             {
                 using var db = _contextFactory.CreateDbContext();
 
-                return Task.FromResult(db.Players.ToList());
+                return await db.Players.ToListAsync();
             }
         }
 

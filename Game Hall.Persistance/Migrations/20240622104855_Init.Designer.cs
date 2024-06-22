@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Game_Hall.Persistance.Migrations
 {
     [DbContext(typeof(Game_Hall_Context))]
-    [Migration("20240608152111_initial")]
-    partial class initial
+    [Migration("20240622104855_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,7 +43,6 @@ namespace Game_Hall.Persistance.Migrations
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(10)
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
@@ -67,7 +66,6 @@ namespace Game_Hall.Persistance.Migrations
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(10)
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
@@ -78,7 +76,6 @@ namespace Game_Hall.Persistance.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<int>("phone")
-                        .HasMaxLength(20)
                         .HasColumnType("int");
 
                     b.HasKey("id");

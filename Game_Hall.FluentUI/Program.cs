@@ -8,7 +8,12 @@ using Microsoft.FluentUI.AspNetCore.Components;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContextFactory<Game_Hall_Context>(options =>
-      options.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection")));
+      options.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection"), opt =>
+    opt.EnableRetryOnFailure(
+        maxRetryCount: 5,
+        maxRetryDelay: System.TimeSpan.FromSeconds(30),
+        errorNumbersToAdd: null)
+    ));
 
 
 // Add services to the container.

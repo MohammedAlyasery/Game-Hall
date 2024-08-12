@@ -2,6 +2,7 @@
 using Game_Hall._Domain.entities;
 using Microsoft.EntityFrameworkCore;
 using GameHall.Servicesinterfaces;
+using System.Numerics;
 
 namespace GameHall.Services
 {
@@ -20,6 +21,15 @@ namespace GameHall.Services
         public async Task Save(Game game)
         {
             using var db = _contextFactory.CreateDbContext();
+
+            var tmp1 = db.games.FirstOrDefault(x => x.name == game.name);
+            if (tmp1 != null)
+            {
+
+
+                  
+
+            }
 
             var tmp = db.games.FirstOrDefault(x => x.id == game.id);
 

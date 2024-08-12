@@ -14,7 +14,11 @@ namespace Game_Hall._Domain.entities
 
         public string Name { get; set; }
 
+       
         public int phone { get; set; }
+       
+
+        public string emale { get; set; }
 
         public List<Game> Games { get; set; }
      

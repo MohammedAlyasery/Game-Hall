@@ -38,9 +38,17 @@ namespace GameHall.Services
 
             public async Task Save(Player player)
             {
-                using var db = _contextFactory.CreateDbContext();
+           
+            using var db = _contextFactory.CreateDbContext();
 
-                var tmp = db.Players.FirstOrDefault(x => x.id == player.id);
+            var tmp1 = db.Players.FirstOrDefault(x => x.Name == player.Name);
+            if (tmp1 != null)
+            {
+
+                throw new InvalidOperationException();
+            }
+
+            var tmp = db.Players.FirstOrDefault(x => x.id == player.id);
 
                 if (tmp == null)
                 {
